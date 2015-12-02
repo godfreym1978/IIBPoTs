@@ -1,0 +1,11 @@
+define qlocal('AGG.IN')
+
+define qlocal('AGG.OUT')
+
+define qlocal('AGG.REQ')
+
+define qlocal('AGG.REP')
+
+define qlocal('AGG.CONT.OUT')
+
+define qlocal('AGG.CONT.IN')

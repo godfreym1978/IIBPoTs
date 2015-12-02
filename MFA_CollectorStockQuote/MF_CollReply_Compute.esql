@@ -1,0 +1,38 @@
+
+
+CREATE COMPUTE MODULE MF_CollReply_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		DECLARE REF_StockColl REFERENCE TO InputRoot.Collection.StockColl[1];
+		DECLARE I INT 1;
+		WHILE LASTMOVE(REF_StockColl) DO
+			IF (EXISTS(REF_StockColl.BLOB[])) THEN
+				CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN('MQMD');
+				SET OutputRoot.MQMD = REF_StockColl.MQMD; 
+						
+			ELSE
+				SET OutputRoot.XMLNSC.StockQuotes.Stock[I] = REF_StockColl.XMLNSC.StockQuotes.Stock;
+				SET I = I + 1; 
+			END IF;
+			MOVE REF_StockColl NEXTSIBLING REPEAT TYPE NAME;			
+		END WHILE;
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

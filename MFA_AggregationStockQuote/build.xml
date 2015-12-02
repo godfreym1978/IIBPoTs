@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project name="project" default="run">
+	<target name="run" description="">
+		<property name="toolkit.home" value="C:\Program Files\IBM\IntegrationToolkit90" />
+		<property name="workspaces.dir" value="C:\Godfrey\Workspaces\IIBT9Workspace" />
+		<property name="runtime.dir" value="C:\Program Files\IBM\MQSI\9.0.0.2\bin" />
+		<property name="appln.name" value="MFA_AggregationStockQuote" />
+		<property name="bar.name" value="${workspaces.dir}\${appln.name}\${appln.name}.bar" />
+		<property name="Brokername" value="WBRK" />
+		<property name="execution.group" value="default" />
+		<antcall target="mqsideploybar" />
+	</target>
+
+	<!--Target to build the broker archive using mqsicreatebar-->
+	<target name="mqsicreatebar.buildbar">
+		<echo message="Building Broker Archive file: ${bar.name} " />
+		<exec executable="${toolkit.home}\mqsicreatebar.exe" spawn="false">
+			<arg value="-data" />
+			<arg value="${workspaces.dir}" />
+			<arg value="-b" />
+			<arg value="${bar.name}" />
+			<arg value="-a" />
+			<arg value="${appln.name}" />
+		</exec>
+		<echo message="Completed building Broker Archive file - ${bar.name} " />
+	</target>
+
+	<!--Target to deploy the broker archive using mqsideploybar-->
+	<target name="mqsideploybar" depends="mqsicreatebar.buildbar">
+		<echo message="Deploying Broker Archive file: ${bar.name} " />
+		<exec executable="${runtime.dir}\mqsideployscript.bat" spawn="false">
+			<arg value="${Brokername}" />
+			<arg value="-e" />
+			<arg value="${execution.group}" />
+			<arg value="-a" />
+			<arg value="${workspaces.dir}\${appln.name}\${appln.name}.bar" />
+		</exec>
+		<echo message="Completed building Broker Archive file - ${bar.name} " />
+	</target>
+</project>

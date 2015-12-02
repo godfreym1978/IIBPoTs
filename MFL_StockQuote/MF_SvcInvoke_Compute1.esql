@@ -1,0 +1,35 @@
+
+
+CREATE COMPUTE MODULE MF_SvcInvoke_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		
+		SET OutputRoot.MQMD = Environment.MQMD;
+		--SET OutputRoot.MQMD.Report = MQRO_PASS_CORREL_ID + MQRO_PAN + MQRO_NAN; 
+		--SET OutputRoot.XMLNSC = InputRoot.XMLNSC;
+		
+		DECLARE sh NAMESPACE 'http://www.webserviceX.NET/';
+		DECLARE data CHAR;
+		SET data  = InputRoot.XMLNSC.sh:GetQuoteResponse.sh:GetQuoteResult;
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC' PARSE (data 
+																			CCSID InputRoot.Properties.CodedCharSetId 
+																			ENCODING 0 ); 
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

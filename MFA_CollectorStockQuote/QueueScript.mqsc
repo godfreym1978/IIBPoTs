@@ -1,0 +1,9 @@
+define qlocal('COLL.IN')
+
+define qlocal('COLL.OUT')
+
+define qlocal('COLL.REQ')
+
+define qlocal('COLL.REP')
+
+define qlocal('COLL.CONTROL')

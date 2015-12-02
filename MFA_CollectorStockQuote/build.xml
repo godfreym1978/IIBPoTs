@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="project" default="run">
+	<target name="run" description="">
+		<property name="workspaces.dir" value="C:\Godfrey\Workspaces\IIBT10Workspace" />
+		<property name="IIB.bin" value="C:\IBM\IIB\10.0.0.0\server\bin" />
+		<property name="bar.name" value="${workspaces.dir}\${appln.name}\${appln.name}.bar" />
+		<antcall target="mqsideploybar" />
+	</target>
+
+	<!--Target to build the broker archive using mqsipackagebar-->
+	<target name="mqsicreatebar.buildbar">
+		<echo message="Building Broker Archive file: ${bar.name} " />
+		<exec executable="${IIB.bin}\mqsipackagebar.bat" spawn="false">
+			<arg value="-w" />
+			<arg value="${workspaces.dir}" />
+			<arg value="-a" />
+			<arg value="${bar.name}" />
+			<arg value="-k" />
+			<arg value="${appln.name}" />
+		</exec>
+		<echo message="Completed building Broker Archive file - ${bar.name} " />
+	</target>
+
+	<!--Target to deploy the broker archive using mqsideploybar-->
+	<target name="mqsideploybar" depends="mqsicreatebar.buildbar">
+		<echo message="Deploying Broker Archive file: ${bar.name} " />
+		<exec executable="${IIB.bin}\mqsideployscript.bat" spawn="false">
+			<arg value="${Brokername}" />
+			<arg value="-e" />
+			<arg value="${execution.group}" />
+			<arg value="-a" />
+			<arg value="${workspaces.dir}\${appln.name}\${appln.name}.bar" />
+		</exec>
+		<echo message="Completed building Broker Archive file - ${bar.name} " />
+	</target>
+</project>

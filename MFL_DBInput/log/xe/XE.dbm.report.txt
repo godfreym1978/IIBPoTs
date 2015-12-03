@@ -1,0 +1,21 @@
+
+
+Importing file: C:\Godfrey\Workspaces\IIBT10Workspace\OracleLocal\XE.dbm
+
+
+Processing schema SYSTEM.
+Creating complex type for table DBINPUT_CUSTOMER.
+Creating global element for table DBINPUT_CUSTOMER.
+
+Processing schema SYSTEM.
+Creating complex type for table DBINPUT_CUSTOMER.
+Creating global element for table DBINPUT_CUSTOMER.
+Creating file \MFL_DBInput\xe\system\DBINPUT_CUSTOMER.xsd in the workspace.
+
+Elapsed time processing this message definition file: 5.393 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

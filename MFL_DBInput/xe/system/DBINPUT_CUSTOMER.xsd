@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xe/system" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:xesystem="http://xe/system">
+  <!-- Message definition generated from C:\Godfrey\Workspaces\IIBT10Workspace\OracleLocal\XE.dbm -->
+
+<!-- Complex type for XE.SYSTEM.DBINPUT_CUSTOMER -->
+    <xsd:complexType name="DBINPUT_CUSTOMERType">
+    <xsd:sequence>
+      <xsd:element name="PKEY">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="FIRSTNAME" nillable="true">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="LASTNAME" nillable="true">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CCODE" nillable="true">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+<!-- Global element for XE.SYSTEM.DBINPUT_CUSTOMER -->
+    <xsd:element ibmSchExtn:docRoot="true" name="DBINPUT_CUSTOMER" type="xesystem:DBINPUT_CUSTOMERType"/>
+</xsd:schema>

@@ -13,9 +13,15 @@ CREATE COMPUTE MODULE MF_SvcInvoke_Compute1
 		DECLARE sh NAMESPACE 'http://www.webserviceX.NET/';
 		DECLARE data CHAR;
 		SET data  = InputRoot.XMLNSC.sh:GetQuoteResponse.sh:GetQuoteResult;
-		CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC' PARSE (data 
-																			CCSID InputRoot.Properties.CodedCharSetId 
-																			ENCODING 0 ); 
+		
+		IF (data = 'exception') THEN
+			SET OutputRoot.XMLNSC.StockQuotes.Stock = 'exception'; 
+		ELSE
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC' PARSE (data 
+																				CCSID InputRoot.Properties.CodedCharSetId 
+																				ENCODING 0 ); 
+		END IF;
+		
 		RETURN TRUE;
 	END;
 

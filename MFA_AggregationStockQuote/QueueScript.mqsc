@@ -9,3 +9,5 @@ define qlocal('AGG.REP')
 define qlocal('AGG.CONT.OUT')
 
 define qlocal('AGG.CONT.IN')
+
+define qlocal('AGG.ERROR')

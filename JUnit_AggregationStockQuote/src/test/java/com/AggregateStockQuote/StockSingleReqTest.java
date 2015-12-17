@@ -22,9 +22,18 @@ public class StockSingleReqTest extends XMLTestCase {
 				+ "/ExpectedFile/StockQuoteRepSingle.xml";
 
 		Util newUtil = new Util();
+		/*
 		newUtil.writeMessageToQueue("WQM.INT", "AGG.REQ", inputFile);
-		TimeUnit.SECONDS.sleep(5);
+		TimeUnit.SECONDS.sleep(7);
 		newUtil.readMessage("WQM.INT", "AGG.REP", outputFile);
+		*/
+		
+		newUtil.queueRequestReply("WQM.INT", 
+				"AGG.REQ", 
+				"AGG.REP", 
+				inputFile, 
+				outputFile,
+				8);
 
 		String controlXML = newUtil.readFile(controlFile);
 		String testXML = newUtil.readFile(outputFile);

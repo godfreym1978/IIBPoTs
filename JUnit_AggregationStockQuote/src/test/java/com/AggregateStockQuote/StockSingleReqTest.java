@@ -1,12 +1,9 @@
 package com.AggregateStockQuote;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import org.custommonkey.xmlunit.*;
-
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
 import com.testing.mq.Util;
 
 public class StockSingleReqTest extends XMLTestCase {

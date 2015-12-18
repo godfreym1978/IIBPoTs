@@ -1,17 +1,9 @@
 package com.AggregateStockQuote;
 
-import static org.junit.Assert.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import org.custommonkey.xmlunit.*;
-
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
 import com.testing.mq.Util;
 
 public class StockMultiReqTest extends XMLTestCase {

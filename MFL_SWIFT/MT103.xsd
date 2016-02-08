@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:recSepFieldsFmt="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat">
+    <xsd:import namespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat" schemaLocation="IBMdefined/RecordSeparatedFieldFormat.xsd"/>
+            <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format encoding="{$dfdl:encoding}" escapeSchemeRef="" occursCountKind="implicit" ref="recSepFieldsFmt:RecordSeparatedFieldsFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+	<xsd:element ibmSchExtn:docRoot="true" name="MT103">
+		<xsd:complexType>
+            					<xsd:sequence dfdl:initiator="" dfdl:separator="" dfdl:sequenceKind="ordered" dfdl:terminator="">
+                                                                                          <xsd:element dfdl:initiator="%#123;1:" dfdl:lengthKind="delimited" dfdl:terminator="%#125;" name="Element1" type="xsd:string"/>
+                <xsd:element dfdl:initiator="%#123;2:" dfdl:terminator="%#125;" name="Element2" type="xsd:string"/>
+                <xsd:element dfdl:initiator="%#123;3:" dfdl:terminator="%#125;" name="Element3">
+          <xsd:complexType>
+            <xsd:sequence dfdl:separator="">
+              <xsd:element dfdl:initiator="%#123;103:" dfdl:terminator="%#125;" name="Tag_103" type="xsd:string"/>
+              <xsd:element dfdl:initiator="%#123;113:" dfdl:terminator="%#125;" name="Tag_113" type="xsd:string"/>
+              <xsd:element dfdl:initiator="%#123;108:" dfdl:terminator="%#125;" name="Tag_108" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+                <xsd:element dfdl:initiator="%#123;4:" dfdl:terminator="-%#125;" name="Element4">
+          <xsd:complexType>
+            <xsd:sequence dfdl:initiator="%CR;%LF;" dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%CR;%LF;">
+              <xsd:element default="" dfdl:initiator=":20:" dfdl:lengthKind="delimited" dfdl:terminator="" name="Tag_20" type="xsd:string"/>
+              <xsd:element dfdl:initiator=":23B:" dfdl:terminator="" name="Tag_23B" type="xsd:string"/>
+              <xsd:element dfdl:initiator=":32A:" dfdl:terminator="," name="Tag_32A" type="xsd:string"/>
+              <xsd:element default="" dfdl:initiator=":33B:" dfdl:occursCountKind="implicit" dfdl:terminator="," minOccurs="0" name="Tag_33B" type="xsd:string"/>
+                                                                                                                                                                    <xsd:element dfdl:emptyValueDelimiterPolicy="terminator" dfdl:initiator=":50K:" dfdl:lengthKind="delimited" dfdl:terminator="" name="Tag_50K">
+                <xsd:complexType>
+                  <xsd:sequence dfdl:initiator="" dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%CR;%LF;" dfdl:separatorPosition="infix" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+                    <xsd:element dfdl:initiator="" dfdl:terminator="" maxOccurs="5" name="Tag" type="xsd:string"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+                            <xsd:element dfdl:initiator=":53A:" dfdl:terminator="" name="Tag_53A" type="xsd:string"/>
+                            <xsd:element dfdl:initiator=":57D:" name="Tag_57D">
+                <xsd:complexType>
+                  <xsd:sequence dfdl:separator="%CR;%LF;">
+                    <xsd:element dfdl:initiator="" dfdl:terminator="" maxOccurs="5" name="Tag" type="xsd:string"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+                            <xsd:element dfdl:initiator=":59:" dfdl:terminator="" name="Tag_59" type="xsd:string"/>
+                            <xsd:element dfdl:initiator=":71A:" dfdl:terminator="%CR;%LF;" name="Tag_71A" type="xsd:string"/>
+                        </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+                                        </xsd:sequence>
+        </xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

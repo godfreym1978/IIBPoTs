@@ -1,0 +1,52 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "MongoDB_RESTAPI",
+    "version" : "1.0.0",
+    "description" : "MongoDB_RESTAPI"
+  },
+  "paths" : {
+    "/getMongoDB" : {
+      "get" : {
+        "operationId" : "getGetMongoDB",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve getMongoDB",
+        "parameters" : [ {
+          "name" : "Collection",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "Key",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "Value",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/mongodb_restapi/v1",
+  "definitions" : {
+    "PSAObject" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : { },
+        "required" : [ ]
+      }
+    }
+  }
+}

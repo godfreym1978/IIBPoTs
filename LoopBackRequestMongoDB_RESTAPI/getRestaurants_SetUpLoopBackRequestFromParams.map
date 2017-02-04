@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0" xmlns:map="default">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">     
+    <xsd:element name="limit" type="xsd:string"/>     
+    <xsd:element name="match" type="xsd:string"/>     
+            <xsd:element name="skip" type="xsd:string"/>     
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/BlobMessage.xsd" var="var"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var1"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/BlobMessage.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="out" uri="http://www.ibm.com/iib/msl/json"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="getRestaurants_SetUpLoopBackRequestFromParams">
+        <input derivedFrom="MB:JSON_operation_name:getRestaurants" path="$var/mb:msg(BLOB,assembly,BLOB,Properties,LocalEnvironment)" var="ComIbmMessageAssembly_BLOB">
+            <cast derivedFrom="MB:JSON_path_query_parm:limit" path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/any" qualifier="limit" ref="var1"/>
+            <cast derivedFrom="MB:JSON_path_query_parm:match" path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/any" qualifier="match" ref="var1"/>
+            <cast derivedFrom="MB:JSON_path_query_parm:skip" path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/any" qualifier="skip" ref="var1"/>
+        </input>
+        <output path="mb:msg(BLOB,assembly,BLOB,LocalEnvironment,Properties)" var="MessageAssembly"/>
+        <task type="info">
+            <documentation description="The REST API input data of operation getRestaurants.">This Task is provided to show the location of the REST API input data of operation getRestaurants.
+The path and query parameters are provided under "Parameters".
+You may need to use these as inputs to your mappings.</documentation>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input"/>
+        </task>
+        <move>
+            <input path="$ComIbmMessageAssembly_BLOB/Properties"/>
+            <output path="$MessageAssembly/Properties"/>
+        </move>
+        <condition>
+            <if>
+                <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/limit" var="limit"/>
+                <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/limit"/>
+                <test lang="xpath">$limit</test>
+                <convert defaultValue="0">
+                    <documentation description="If a limit property was provided">User sends for example&#13;
+10</documentation>
+                    <input path="$limit/." var="limit"/>
+                    <output path="."/>
+                </convert>
+            </if>
+            <else>
+                <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/limit"/>
+                <assign value="25">
+                    <documentation description="Impose limit of 25"/>
+                    <output path="."/>
+                </assign>
+            </else>
+        </condition>
+        <convert defaultValue="0">
+            <documentation description="If a skip property was provided">User sends for example&#13;
+20</documentation>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/skip" var="skip"/>
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/skip"/>
+            <filter lang="xpath">$skip</filter>
+        </convert>
+        <if>
+            <documentation description="If a match property was provided">User sends for example&#13;
+borough#Brooklyn&#13;
+This will set the externalIdName to borough&#13;
+and the externalId to Brooklyn</documentation>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/match" var="match"/>
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/externalIdName" var="externalIdName"/>
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/externalId" var="externalId"/>
+            <test lang="xpath">$match</test>
+            <expression>
+                <input path="$match/." var="match"/>
+                <output path="$externalIdName/."/>
+                <code lang="xpath">(fn:tokenize( $match, '#'))[1]</code>
+            </expression>
+            <expression>
+                <input path="$match/." var="match1"/>
+                <output path="$externalId/."/>
+                <code lang="xpath">(fn:tokenize( $match1, '#'))[2]</code>
+            </expression>
+        </if>
+    </mappingDeclaration>
+</mappingRoot>

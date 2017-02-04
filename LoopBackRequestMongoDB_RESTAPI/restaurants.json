@@ -1,0 +1,85 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+
+	"type": "array",
+	"items": {
+		"$ref": "#/definitions/restarant"
+	},
+	"definitions": {
+		"restarant": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"address": {
+					"type": "object",
+					"properties": {
+						"building": {
+							"type": "string"
+						},
+						"coord": {
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						},
+						"street": {
+							"type": "string"
+						},
+						"zipcode": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"building",
+						"coord",
+						"street",
+						"zipcode"
+					]
+				},
+				"borough": {
+					"type": "string"
+				},
+				"cuisine": {
+					"type": "string"
+				},
+				"grades": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"date": {
+								"type": "string"
+							},
+							"grade": {
+								"type": "string"
+							},
+							"score": {
+								"type": "integer"
+							}
+						},
+						"required": [
+							"date",
+							"grade",
+							"score"
+						]
+					}
+				},
+				"name": {
+					"type": "string"
+				},
+				"restaurant_id": {
+					"type": "integer"
+				}
+			},
+			"required": [
+				"address",
+				"borough",
+				"cuisine",
+				"name",
+				"restaurant_id"
+			]
+		}
+	}
+}

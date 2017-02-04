@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0" xmlns:map="default">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
+    <xsd:element name="match" type="xsd:string"/>  
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/BlobMessage.xsd" var="var"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var1"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/BlobMessage.xsd"/>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="deleteRestaurants_SetupDelete">
+        <input derivedFrom="MB:JSON_operation_name:deleteRestaurants" path="$var/mb:msg(BLOB,assembly,BLOB,Properties,LocalEnvironment)" var="ComIbmMessageAssembly_BLOB">
+            <cast derivedFrom="MB:JSON_path_query_parm:match" path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/any" qualifier="match" ref="var1"/>
+        </input>
+        <output path="mb:msg(BLOB,assembly,BLOB,LocalEnvironment,Properties)" var="ComIbmMessageAssembly_BLOB1"/>
+        <move>
+            <input path="$ComIbmMessageAssembly_BLOB/Properties"/>
+            <output path="$ComIbmMessageAssembly_BLOB1/Properties"/>
+        </move>
+        <task type="info">
+            <documentation description="The REST API input data of operation deleteRestaurants.">This Task is provided to show the location of the REST API input data of operation deleteRestaurants.
+The path and query parameters are provided under "Parameters".
+You may need to use these as inputs to your mappings.</documentation>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input"/>
+        </task>
+        <expression>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/match" var="match"/>
+            <output path="$ComIbmMessageAssembly_BLOB1/LocalEnvironment/Destination/Loopback/Request/externalIdName"/>
+            <code lang="xpath">(fn:tokenize( $match, '#' ))[1]</code>
+        </expression>
+        <expression>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/match" var="match1"/>
+            <output path="$ComIbmMessageAssembly_BLOB1/LocalEnvironment/Destination/Loopback/Request/externalId"/>
+            <code lang="xpath">(fn:tokenize( $match1, '#' ))[2]</code>
+        </expression>
+    </mappingDeclaration>
+</mappingRoot>

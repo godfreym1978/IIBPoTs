@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0" xmlns:map="default">
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var"/>
+    <input derivedFrom="MB:JSON_schema_in_swagger_document" path="/swagger.json" var="var1"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/JsonDomainMsg.xsd" var="var3"/>
+    <output derivedFrom="MB:JSON_schema_in_json_file" path="/restaurants.json" var="var2"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in" uri="http://www.ibm.com/iib/msl/json"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="putRestaurants_SetupUpdate">
+        <input derivedFrom="MB:JSON_operation_name:putRestaurants" namespace="http://www.ibm.com/iib/msl/json" path="$var/mb:msg(JSON,assembly,JSON,Properties,LocalEnvironment)" var="ComIbmMessageAssembly_JSON">
+            <cast derivedFrom="MB:JSON_operation_request" path="$ComIbmMessageAssembly_JSON/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}RestaurantGrade" ref="var1"/>
+        </input>
+        <output namespace="http://www.ibm.com/iib/msl/json" path="$var3/mb:msg(JSON,assembly,JSON,LocalEnvironment,Properties)" var="MessageAssembly">
+            <cast derivedFrom="MB:JSON_TYPE" path="$MessageAssembly/JSON/Data/type('anyType')" qualifier="{http://www.ibm.com/iib/msl/json}restarant" ref="var2"/>
+        </output>
+        <task type="info">
+            <documentation description="The REST API input data of operation putRestaurants.">This Task is provided to show the location of the REST API input data of operation putRestaurants.
+The path and query parameters are provided under "Parameters".
+You may need to use these as inputs to your mappings.</documentation>
+            <input path="$ComIbmMessageAssembly_JSON/LocalEnvironment/REST/Input"/>
+        </task>
+        <move>
+            <input path="$ComIbmMessageAssembly_JSON/Properties"/>
+            <output path="$MessageAssembly/Properties"/>
+        </move>
+        <function ref="fn:concat">
+            <input path="$ComIbmMessageAssembly_JSON/JSON/spath('Data',2)/name" var="name"/>
+            <input path="$ComIbmMessageAssembly_JSON/JSON/spath('Data',2)/borough" var="borough"/>
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/where"/>
+            <param name="string1" value="'{&quot;and&quot;: [{&quot;name&quot;:{&quot;eq&quot;:&quot;'"/>
+            <param name="string2" value="$name"/>
+            <param name="string3" value="'&quot;}},{&quot;borough&quot;:{&quot;eq&quot;:&quot;'"/>
+            <param name="string4" value="$borough"/>
+            <param name="string5" value="'&quot;}}]}'"/>
+        </function>
+        <local>
+            <input path="$ComIbmMessageAssembly_JSON/JSON/spath('Data',2)"/>
+            <output path="$MessageAssembly/JSON/spath('Data',2)/grades/Item"/>
+            <move>
+                <input path="grade"/>
+                <output path="grade"/>
+            </move>
+            <move>
+                <input path="score"/>
+                <output path="score"/>
+            </move>
+            <function ref="fn:current-dateTime">
+                <output path="date"/>
+            </function>
+        </local>
+    </mappingDeclaration>
+</mappingRoot>

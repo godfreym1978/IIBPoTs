@@ -1,0 +1,230 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "LoopBackRequest",
+    "version" : "1.0.0",
+    "description" : "LoopBackRequest"
+  },
+  "host" : "localhost:7800",
+  "paths" : {
+    "/MongoDB/Restaurants" : {
+      "get" : {
+        "operationId" : "getRestaurants",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/RestaurantInfo"
+              }
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve MongoDB",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "type" : "number"
+        }, {
+          "name" : "skip",
+          "in" : "query",
+          "type" : "number"
+        }, {
+          "name" : "match",
+          "in" : "query",
+          "type" : "string"
+        } ]
+      },
+      "put" : {
+        "operationId" : "putRestaurants",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Update Restaurants",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/RestaurantGrade"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      },
+      "delete" : {
+        "operationId" : "deleteRestaurants",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Remove from Restaurants",
+        "parameters" : [ {
+          "name" : "match",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        } ]
+      }
+    },
+    "/MongoDB/Restaurant" : {
+      "get" : {
+        "operationId" : "getRestaurant",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/RestaurantInfo"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve Restaurant",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        } ]
+      },
+      "delete" : {
+        "operationId" : "deleteRestaurant",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Remove from Restaurant",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        } ]
+      },
+      "post" : {
+        "operationId" : "postRestaurant",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a Restaurant",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/NewRestarant"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/MongoDB/TopRestaurants" : {
+      "get" : {
+        "operationId" : "getTopRestaurants",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/RestaurantInfo"
+              }
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve TopRestaurants",
+        "parameters" : [ {
+          "name" : "cuisine",
+          "in" : "query",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "borough",
+          "in" : "query",
+          "type" : "string"
+        } ]
+      }
+    }
+  },
+  "basePath" : "/loopbackrequest/v1",
+  "definitions" : {
+    "RestaurantInfo" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "cuisine" : {
+          "type" : "string"
+        },
+        "borough" : {
+          "type" : "string"
+        },
+        "maxGradeAScore" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "RestaurantGrade" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "borough" : {
+          "type" : "string"
+        },
+        "grade" : {
+          "type" : "string"
+        },
+        "score" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "NewRestarant" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "cuisine" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "object",
+          "properties" : {
+            "building" : {
+              "type" : "string"
+            },
+            "street" : {
+              "type" : "string"
+            },
+            "borough" : {
+              "type" : "string"
+            },
+            "zipcode" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "building", "borough", "zipcode" ]
+        }
+      },
+      "required" : [ "name", "cuisine", "address" ]
+    }
+  }
+}

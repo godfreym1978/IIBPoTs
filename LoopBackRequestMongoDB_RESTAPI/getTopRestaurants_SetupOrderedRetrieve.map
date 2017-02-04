@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0" xmlns:map="default">
+    <inlinedXMLSchema><![CDATA[<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">    
+            <xsd:element name="name" type="xsd:boolean"/>  
+    <xsd:element name="grades.score" type="xsd:string"/>   
+    <xsd:element name="grades.grade" type="xsd:string"/>   
+    <xsd:element name="cuisine" type="xsd:string"/>    
+    <xsd:element name="borough" type="xsd:string"/>    
+</xsd:schema>]]></inlinedXMLSchema>
+    <input path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/BlobMessage.xsd" var="var"/>
+    <input inlinedXMLSchema="true" path="../schema_0.xsd" var="var1"/>
+    <output path="jar:file://!com/ibm/etools/mft/map/xsds/predefined/BlobMessage.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="out" uri="http://www.ibm.com/iib/msl/json"/>
+        <namespace kind="extension" prefix="fn" uri="http://www.w3.org/2005/xpath-functions"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="getTopRestaurants_SetupOrderedRetrieve">
+        <input derivedFrom="MB:JSON_operation_name:getTopRestaurants" path="$var/mb:msg(BLOB,assembly,BLOB,Properties,LocalEnvironment)" var="ComIbmMessageAssembly_BLOB">
+            <cast derivedFrom="MB:JSON_path_query_parm:cuisine" path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/any" qualifier="cuisine" ref="var1"/>
+            <cast derivedFrom="MB:JSON_path_query_parm:borough" path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/any" qualifier="borough" ref="var1"/>
+        </input>
+        <output path="mb:msg(BLOB,assembly,BLOB,LocalEnvironment,Properties)" var="MessageAssembly">
+            <cast castType="userDefined" path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/order/any" qualifier="grades.grade" ref="var1"/>
+            <cast castType="userDefined" path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/order/any" qualifier="grades.score" ref="var1"/>
+            <cast castType="userDefined" path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/field/any" qualifier="name" ref="var1"/>
+        </output>
+        <task type="info">
+            <documentation description="The REST API input data of operation getTopRestaurants.">This Task is provided to show the location of the REST API input data of operation getTopRestaurants.
+The path and query parameters are provided under "Parameters".
+You may need to use these as inputs to your mappings.</documentation>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input"/>
+        </task>
+        <move>
+            <input path="$ComIbmMessageAssembly_BLOB/Properties"/>
+            <output path="$MessageAssembly/Properties"/>
+        </move>
+        <condition>
+            <if>
+                <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/borough" var="borough"/>
+                <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/cuisine" var="cuisine"/>
+                <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/where"/>
+                <test lang="xpath">$borough</test>
+                <function ref="fn:concat">
+                    <documentation description="Build the Where clause">As {"and": [{"cuisine":{"eq":"$cuisine"}},{"borough":{"eq":"$borough"}}]}</documentation>
+                    <input path="$cuisine/." var="cuisine2"/>
+                    <input path="$borough/." var="borough2"/>
+                    <output path="."/>
+                    <param name="string1" value="'{&quot;and&quot;: [{&quot;cuisine&quot;:{&quot;eq&quot;:&quot;'"/>
+                    <param name="string2" value="$cuisine2"/>
+                    <param name="string3" value="'&quot;}},{&quot;borough&quot;:{&quot;eq&quot;:&quot;'"/>
+                    <param name="string4" value="$borough2"/>
+                    <param name="string5" value="'&quot;}}]}'"/>
+                </function>
+            </if>
+            <else>
+                <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/cuisine"/>
+                <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/where"/>
+                <function ref="fn:concat">
+                    <documentation description="Build the Where clause">{"cuisine":{"eq":"$cuisine1"}}</documentation>
+                    <input path="." var="cuisine1"/>
+                    <output path="."/>
+                    <param name="string1" value="'{&quot;cuisine&quot;:{&quot;eq&quot;:&quot;'"/>
+                    <param name="string2" value="$cuisine1"/>
+                    <param name="string3" value="'&quot;}}'"/>
+                </function>
+            </else>
+        </condition>
+        <assign value="3">
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/limit"/>
+        </assign>
+        <append>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/cuisine" var="cuisine3"/>
+            <input path="$ComIbmMessageAssembly_BLOB/LocalEnvironment/REST/Input/Parameters/cuisine" var="cuisine4"/>
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/order"/>
+            <foreach>
+                <input path="$cuisine3/." var="cuisine6"/>
+                <output path="."/>
+                <assign value="DESC">
+                    <output path="grades.grade"/>
+                </assign>
+            </foreach>
+            <foreach>
+                <input path="$cuisine4/." var="cuisine5"/>
+                <output path="."/>
+                <assign value="DESC">
+                    <output path="grades.score"/>
+                </assign>
+            </foreach>
+        </append>
+        <create empty="true">
+            <output path="$MessageAssembly/LocalEnvironment/Destination/Loopback/Request/filter/field"/>
+            <assign value="true">
+                <output path="name"/>
+            </assign>
+        </create>
+    </mappingDeclaration>
+</mappingRoot>
